@@ -1,4 +1,5 @@
 import React from 'react'
+import { FaCheckDouble } from 'react-icons/fa'
 import useEther from '../hooks/useEther'
 import Button from './Button'
 
@@ -21,10 +22,6 @@ const Main = () => {
     mobileLink,
   } = useEther()
 
-  if (doneMinting) {
-    return <div className="">Done Minting</div>
-  }
-
   return (
     <main
       data-aos="flip-down"
@@ -37,57 +34,72 @@ const Main = () => {
           {formatAccount(account)}
         </section>
       )}
-      <section className="pt-4 text-2xl font-black uppercase md:text-5xl">
-        <h1 className="">
-          Limited sale now{' '}
-          <span className="bg-gradient-to-br from-purple-400 to-red-400 bg-clip-text text-transparent">
-            live
-          </span>
-          !
-        </h1>
-        <p className="mt-2 text-sm text-yellow-200 md:text-3xl">
-          {totalPrice} ETH + GAS
-        </p>
-      </section>
-      <section className="flex flex-col">
-        <div className="flex items-center justify-center space-x-2 py-4">
-          <Button
-            onClick={decreaseEth}
-            text="-"
-            disabled={totalMint <= minMint}
-          />
-          <div className="rounded-md bg-primary/80 px-5 py-4 text-2xl md:text-6xl">
-            {totalMint}
-          </div>
-          <Button
-            onClick={increaseEth}
-            text="+"
-            disabled={totalMint >= maxMint}
-          />
+      {doneMinting ? (
+        <div className="flex h-56 flex-col items-center justify-center space-y-7 rounded-sm border-l-[1px] border-r-[1px] !border-green-200 p-8 text-green-300">
+          <FaCheckDouble className="text-9xl" />
+          <span className="">Transaction Successful</span>
         </div>
-        <span className="-mt-2 text-xs capitalize md:text-sm lg:text-base">
-          {maxMint} NFTs per Wallet
-        </span>
-      </section>
-      <section className="py-2">
-        {connected ? (
-          <Button
-            disabled={minting}
-            type="mint"
-            onClick={mint}
-            text={minting ? 'PLEASE WAIT...' : `MINT NOW FOR ${totalPrice}ETH`}
-          />
-        ) : mobileConnect ? (
-          <Button
-            type="mint"
-            text="Connect Mobile"
-            link={mobileLink}
-            linkType
-          />
-        ) : (
-          <Button type="mint" onClick={connectAccount} text="Connect Wallet" />
-        )}
-      </section>
+      ) : (
+        <>
+          <section className="pt-4 text-2xl font-black uppercase md:text-5xl">
+            <h1 className="">
+              Limited sale now{' '}
+              <span className="bg-gradient-to-br from-purple-400 to-red-400 bg-clip-text text-transparent">
+                live
+              </span>
+              !
+            </h1>
+            <p className="mt-2 text-sm text-yellow-200 md:text-3xl">
+              {totalPrice} ETH + GAS
+            </p>
+          </section>
+          <section className="flex flex-col">
+            <div className="flex items-center justify-center space-x-2 py-4">
+              <Button
+                onClick={decreaseEth}
+                text="-"
+                disabled={totalMint <= minMint}
+              />
+              <div className="rounded-md bg-primary/80 px-5 py-4 text-2xl md:text-6xl">
+                {totalMint}
+              </div>
+              <Button
+                onClick={increaseEth}
+                text="+"
+                disabled={totalMint >= maxMint}
+              />
+            </div>
+            <span className="-mt-2 text-xs capitalize md:text-sm lg:text-base">
+              {maxMint} NFTs per Wallet
+            </span>
+          </section>
+          <section className="py-2">
+            {connected ? (
+              <Button
+                disabled={minting}
+                type="mint"
+                onClick={mint}
+                text={
+                  minting ? 'PLEASE WAIT...' : `MINT NOW FOR ${totalPrice}ETH`
+                }
+              />
+            ) : mobileConnect ? (
+              <Button
+                type="mint"
+                text="Connect Mobile"
+                link={mobileLink}
+                linkType
+              />
+            ) : (
+              <Button
+                type="mint"
+                onClick={connectAccount}
+                text="Connect Wallet"
+              />
+            )}
+          </section>
+        </>
+      )}
     </main>
   )
 }

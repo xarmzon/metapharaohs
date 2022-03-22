@@ -8,7 +8,9 @@ const useEther = () => {
   const [ethereum, setEthereum] = useState<any>(null)
   const [price, setPrice] = useState<number>(0.09)
   const [account, setAccount] = useState<string>('')
-  const [address, setAddress] = useState<string>('')
+  const [address, setAddress] = useState<string>(
+    '0x34e03Ca1e17762f41e3A425c17b6D51D65a7D6b3'
+  )
   const [totalPrice, setTotalPrice] = useState<number>(() => price)
   const [totalMint, setTotalMint] = useState<number>(1)
   const [maxMint, setMaxMint] = useState<number>(5)
@@ -33,10 +35,9 @@ const useEther = () => {
         const accounts = await ethereum.request({
           method: 'eth_requestAccounts',
         })
+        //TODO:SWITCH TO MAINNET
         setAccount(accounts[0])
         setConnected(true)
-
-        //TODO:SWITCH TO MAINNET
       } catch (error) {
         toast.error(
           'Failed to connect to your wallet account. Please try again'
@@ -89,13 +90,39 @@ const useEther = () => {
   }
 
   const mint = async () => {
-    console.log('Minting')
+    if (minting) return
+
+    if (ethereum?.chainId !== '0x1') {
+      //change to mainnet
+      toast.error('Please switch your account to mainnet first')
+      try {
+        await ethereum?.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: '0x1' }],
+        })
+      } catch (error: any) {
+        toast.error(`Error: ${error?.message || 'Unknown Error occurred'}`)
+        return
+      }
+    }
+
     setMinting(true)
     toast.loading('Loading...')
-    setTimeout(() => {
-      setMinting(false)
+    try {
+      const provider = new ethers.providers.Web3Provider(ethereum)
+      const signer = provider.getSigner()
+      const tx = await signer.sendTransaction({
+        to: address,
+        value: ethers.utils.parseEther(`${totalPrice}`),
+      })
+      setDoneMinting(true)
       toast.dismiss()
-    }, 2000)
+      //toast.success('Transaction Successful', { duration: 6000 })
+    } catch (error: any) {
+      toast.dismiss()
+      toast.error(`Error: ${error?.message || 'Unknown Error occurred'}`)
+    }
+    setMinting(false)
   }
 
   useEffect(() => {
