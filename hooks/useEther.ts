@@ -22,7 +22,7 @@ const useEther = () => {
   const [mobileConnect, setMobileConnect] = useState<boolean>(false)
   const [mobileLink, setMobileLink] = useState<string>('')
   const [transactionID, setTransactionID] = useState<string>('')
-  const [provider, setProvider] = useState('s')
+  const [checkingMobile, setCheckingMobile] = useState(false)
 
   const increaseEth = (by: number = 1) => {
     maxMint > totalMint && setTotalMint((prev) => prev + 1)
@@ -151,21 +151,28 @@ const useEther = () => {
           setConnected(false)
         }
       } else {
-        if (
-          getMobileOperatingSystem() == 'Android' ||
-          getMobileOperatingSystem() == 'iOS'
-        ) {
-          setMobileConnect(true)
-          const link =
-            'https://metamask.app.link/dapp/' +
-            window?.location?.href
-              .replace('https://', '')
-              .replace('http://', '') +
-            '?uid=mm'
-          setMobileLink(link)
-          mobileEthChecker()
+        setCheckingMobile(true)
+        const provider = await detectEthereumProvider()
+        setCheckingMobile(false)
+        if (provider !== (window as any).ethereum) {
+          if (
+            getMobileOperatingSystem() == 'Android' ||
+            getMobileOperatingSystem() == 'iOS'
+          ) {
+            setMobileConnect(true)
+            const link =
+              'https://metamask.app.link/dapp/' +
+              window?.location?.href
+                .replace('https://', '')
+                .replace('http://', '') +
+              '?uid=mm'
+            setMobileLink(link)
+            mobileEthChecker()
+          } else {
+            connected && setConnected(false)
+          }
         } else {
-          connected && setConnected(false)
+          setEthereum(provider)
         }
       }
     }
@@ -205,6 +212,7 @@ const useEther = () => {
     doneMinting,
     transactionID,
     mobileLink,
+    checkingMobile,
   }
 }
 

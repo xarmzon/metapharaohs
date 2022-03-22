@@ -20,6 +20,7 @@ const Main = () => {
     doneMinting,
     mobileConnect,
     mobileLink,
+    checkingMobile,
   } = useEther()
 
   return (
@@ -90,6 +91,8 @@ const Main = () => {
                 link={mobileLink}
                 linkType
               />
+            ) : checkingMobile ? (
+              <Button type="mint" text="Checking...." disabled />
             ) : (
               <Button
                 type="mint"
