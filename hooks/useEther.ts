@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
+import detectEthereumProvider from '@metamask/detect-provider'
 
 type TypeOS = 'Android' | 'iOS' | 'Unknown' | 'Windows Phone' | 'Metamask'
 
@@ -21,6 +22,7 @@ const useEther = () => {
   const [mobileConnect, setMobileConnect] = useState<boolean>(false)
   const [mobileLink, setMobileLink] = useState<string>('')
   const [transactionID, setTransactionID] = useState<string>('')
+  const [provider, setProvider] = useState('s')
 
   const increaseEth = (by: number = 1) => {
     maxMint > totalMint && setTotalMint((prev) => prev + 1)
@@ -117,7 +119,7 @@ const useEther = () => {
       })
       setDoneMinting(true)
       toast.dismiss()
-      //toast.success('Transaction Successful', { duration: 6000 })
+      toast.success('Transaction Successful', { duration: 6000 })
     } catch (error: any) {
       toast.dismiss()
       toast.error(`Error: ${error?.message || 'Unknown Error occurred'}`)
@@ -131,6 +133,15 @@ const useEther = () => {
         (window as any).ethereum ? (window as any).ethereum : null
       )
     }
+
+    //window mobile checker
+    const mobileEthChecker = () => {
+      window.addEventListener('ethereum#initialized', checkExistingAccount, {
+        once: true,
+      })
+      setTimeout(checkExistingAccount, 3000)
+    }
+
     const checkExistingAccount = async () => {
       if (ethereum) {
         if (ethereum?.selectedAddress) {
@@ -152,6 +163,7 @@ const useEther = () => {
               .replace('http://', '') +
             '?uid=mm'
           setMobileLink(link)
+          mobileEthChecker()
         } else {
           connected && setConnected(false)
         }
