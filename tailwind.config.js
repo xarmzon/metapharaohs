@@ -5,6 +5,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        box1: '2px 3px 38px 6px rgba(43,7,110,0.59)',
+        box2: '2px 3px 44px 8px rgba(10,2,6,0.59)',
+      },
       backgroundImage: {
         nft: 'url(/images/background.jpg)',
       },

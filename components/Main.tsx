@@ -29,7 +29,7 @@ const Main = () => {
     <main
       data-aos="flip-down"
       data-aos-delay="300"
-      className="max-container relative flex w-[90%] flex-col space-y-5 divide-y divide-dashed divide-slate-200/30 rounded-lg border-[4px] border-x-primary-201 border-y-primary-101 p-5 py-2 text-center backdrop-blur-[1px]"
+      className="max-container relative flex w-[90%] flex-col space-y-5 divide-y divide-dashed divide-slate-200/30 rounded-lg border-[4px] border-x-primary-201 border-y-primary-101 p-5 py-2 text-center shadow-box2 backdrop-blur-[1px] transition-all duration-[1s] hover:shadow-box1"
     >
       <span className="absolute -inset-2 -z-[1] bg-gradient-to-tr from-pink-800 to-purple-900 opacity-30 blur-sm" />
       {account && (
