@@ -18,7 +18,7 @@ export const DEFAULT_SEO: DefaultSeoProps = {
     description: `${APP_NAME.toUpperCase()} READY TO TAKE OVER THE METAVERSE AND THE NFT SPACE`,
     images: [
       {
-        url: `${SITE_URL}images/nft/fm_4.png`,
+        url: `${SITE_URL}/images/nft/fm_4.png`,
         width: 600,
         height: 600,
         alt: `${APP_NAME} open graph image`,

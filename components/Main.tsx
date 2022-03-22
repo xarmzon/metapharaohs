@@ -10,14 +10,21 @@ const Main = () => {
     totalPrice,
     maxMint,
     account,
-    price,
     minMint,
     connected,
     connectAccount,
     formatAccount,
     mint,
     minting,
+    doneMinting,
+    mobileConnect,
+    mobileLink,
   } = useEther()
+
+  if (doneMinting) {
+    return <div className="">Done Minting</div>
+  }
+
   return (
     <main
       data-aos="flip-down"
@@ -69,6 +76,13 @@ const Main = () => {
             type="mint"
             onClick={mint}
             text={minting ? 'PLEASE WAIT...' : `MINT NOW FOR ${totalPrice}ETH`}
+          />
+        ) : mobileConnect ? (
+          <Button
+            type="mint"
+            text="Connect Mobile"
+            link={mobileLink}
+            linkType
           />
         ) : (
           <Button type="mint" onClick={connectAccount} text="Connect Wallet" />

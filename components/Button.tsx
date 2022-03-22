@@ -1,10 +1,12 @@
 import React from 'react'
 
 interface IButton {
-  onClick: () => void
+  onClick?: () => void
   text: string
   type?: 'sm' | 'mint'
   disabled?: boolean
+  linkType?: boolean
+  link?: string
 }
 
 const classes = {
@@ -13,14 +15,35 @@ const classes = {
   mint: 'px-4 py-2 bg-gradient-to-t from-primary hover:from-primary/80 to-primary-500',
 }
 
-const Button = ({ onClick, text, type = 'sm', disabled = false }: IButton) => {
+const processClassName = (type: IButton['type']) =>
+  `${classes.common} ${type === 'sm' ? classes.sm : classes.mint}`
+
+const Button = ({
+  onClick,
+  text,
+  type = 'sm',
+  disabled = false,
+  linkType = false,
+  link = '',
+}: IButton) => {
+  if (linkType) {
+    return (
+      <a
+        href={link}
+        className={processClassName(type)}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {text}
+      </a>
+    )
+  }
+
   return (
     <button
       disabled={disabled}
       onClick={onClick}
-      className={`${classes.common} ${
-        type === 'sm' ? classes.sm : classes.mint
-      }`}
+      className={processClassName(type)}
     >
       {text}
     </button>
