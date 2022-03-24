@@ -37,6 +37,7 @@ const useEther = () => {
         const accounts = await ethereum.request({
           method: 'eth_requestAccounts',
         })
+        //TODO:SWITCH TO MAINNET
         setAccount(accounts[0])
         setConnected(true)
       } catch (error) {
