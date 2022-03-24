@@ -80,19 +80,17 @@ const Main = () => {
                 disabled={minting}
                 type="mint"
                 onClick={mint}
-                text={
-                  minting ? 'PLEASE WAIT...' : `MINT NOW FOR ${totalPrice}ETH`
-                }
+                text={minting ? 'MINTING' : `MINT`}
               />
             ) : mobileConnect ? (
               <Button
                 type="mint"
-                text="Connect Mobile"
+                text="Connect Wallet"
                 link={mobileLink}
                 linkType
               />
             ) : checkingMobile ? (
-              <Button type="mint" text="Checking...." disabled />
+              <Button type="mint" text="Checking..." disabled />
             ) : (
               <Button
                 type="mint"
