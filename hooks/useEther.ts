@@ -10,7 +10,7 @@ const useEther = () => {
   const [price, setPrice] = useState<number>(0.15)
   const [account, setAccount] = useState<string>('')
   const [address, setAddress] = useState<string>(
-    '0x34e03Ca1e17762f41e3A425c17b6D51D65a7D6b3'
+    '0x5E0C7B9805aE842E30909F3c63344D4964EDb23f'
   )
   const [totalPrice, setTotalPrice] = useState<number>(() => price)
   const [totalMint, setTotalMint] = useState<number>(1)
